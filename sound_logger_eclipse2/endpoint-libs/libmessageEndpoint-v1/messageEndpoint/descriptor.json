@@ -1,13 +1,13 @@
 {
   "files": [
     {
-      "downloadUrl": "/downloads/messageEndpoint/v1/20131019194828/java/1.16.0-rc/brooklynmarathon.com-messageEndpoint-v1-20131019194828-java-1.16.0-rc-sources.jar", 
-      "path": "brooklynmarathon.com-messageEndpoint-v1-20131019194828-java-1.16.0-rc-sources.jar", 
+      "downloadUrl": "/downloads/messageEndpoint/v1/20131019201154/java/1.16.0-rc/brooklynmarathon.com-messageEndpoint-v1-20131019201154-java-1.16.0-rc-sources.jar", 
+      "path": "brooklynmarathon.com-messageEndpoint-v1-20131019201154-java-1.16.0-rc-sources.jar", 
       "type": "source", 
-      "timestamp": "2013-10-19 19:48"
+      "timestamp": "2013-10-19 20:11"
     }, 
     {
-      "path": "brooklynmarathon.com-messageEndpoint-v1-20131019194828-java-1.16.0-rc.jar.properties", 
+      "path": "brooklynmarathon.com-messageEndpoint-v1-20131019201154-java-1.16.0-rc.jar.properties", 
       "type": "android.properties"
     }
   ], 
@@ -702,5 +702,5 @@
   "packagePath": "sound_logger_eclipse2", 
   "language_version": "1.16.0-rc", 
   "id": "messageEndpoint:v1", 
-  "revision": 20131019194828
+  "revision": 20131019201154
 }
