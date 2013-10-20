@@ -165,7 +165,9 @@ public class RegisterActivity extends Activity {
                     try
                     {
                         Thread.sleep(1000*60);
-                        Log.i("Noise", "Tock");
+                    	//Thread.sleep(1000);
+                        
+                    	Log.i("Noise", "Tock");
                     } catch (InterruptedException e) { };
                     mHandler.post(updater);
                 }
@@ -423,17 +425,20 @@ public class RegisterActivity extends Activity {
 
   public void updateTv(){
 	  
-	  Double db = soundDb(65535.0);
-  	Log.d(TAG,"QQQ: " + mStatusView  + " " + Double.toString(db) + " dB" );
+	//  Double db = soundDb(getAmplitude());
+	  Double soundlevel = getAmplitude();
+  	Log.d(TAG,"QQQ: " + mStatusView  + " " + Double.toString(soundlevel) );
   	
-  	mStatusView.setText(Double.toString(db) + " dB");
+  	mStatusView.setText(Double.toString(soundlevel) );
   	HttpGetter get = new HttpGetter();
+  	/**/
   	try {
-		get.execute(new URL("http://citysync.brooklynmarathon.com/sound?s=" + db));
+		get.execute(new URL("http://citysync.brooklynmarathon.com/sound?s=" + soundlevel));
 	} catch (MalformedURLException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
+	/**/
   }
   public double soundDb(double ampl){
       return  20 * Math.log10(getAmplitudeEMA() / ampl);
