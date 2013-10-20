@@ -164,7 +164,7 @@ public class RegisterActivity extends Activity {
                 {
                     try
                     {
-                        Thread.sleep(1000*60*10);
+                        Thread.sleep(1000*60);
                         Log.i("Noise", "Tock");
                     } catch (InterruptedException e) { };
                     mHandler.post(updater);
