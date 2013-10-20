@@ -422,12 +422,14 @@ public class RegisterActivity extends Activity {
   }
 
   public void updateTv(){
-  	Log.d(TAG,"QQQ: " + mStatusView  + " " + Double.toString((getAmplitudeEMA())) + " dB" );
+	  
+	  Double db = getAmplitudeEMA();
+  	Log.d(TAG,"QQQ: " + mStatusView  + " " + Double.toString(db) + " dB" );
   	
-  	mStatusView.setText(Double.toString((getAmplitudeEMA())) + " dB");
+  	mStatusView.setText(Double.toString(db) + " dB");
   	HttpGetter get = new HttpGetter();
   	try {
-		get.execute(new URL("http://citysync.brooklynmarathon.com/sound?s=" + getAmplitudeEMA()));
+		get.execute(new URL("http://citysync.brooklynmarathon.com/sound?s=" + db));
 	} catch (MalformedURLException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
