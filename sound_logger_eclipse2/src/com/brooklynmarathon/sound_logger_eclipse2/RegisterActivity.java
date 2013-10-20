@@ -1,14 +1,21 @@
 package com.brooklynmarathon.sound_logger_eclipse2;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 
-import com.brooklynmarathon.sound_logger_eclipse2.messageEndpoint.MessageEndpoint;
-import com.brooklynmarathon.sound_logger_eclipse2.messageEndpoint.model.CollectionResponseMessageData;
-import com.brooklynmarathon.sound_logger_eclipse2.messageEndpoint.model.MessageData;
-import com.google.api.client.extensions.android.http.AndroidHttp;
-import com.google.api.client.http.HttpRequest;
-import com.google.api.client.http.HttpRequestInitializer;
-import com.google.api.client.json.jackson.JacksonFactory;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.StatusLine;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -24,6 +31,16 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.brooklynmarathon.sound_logger_eclipse2.messageEndpoint.MessageEndpoint;
+import com.brooklynmarathon.sound_logger_eclipse2.messageEndpoint.model.CollectionResponseMessageData;
+import com.brooklynmarathon.sound_logger_eclipse2.messageEndpoint.model.MessageData;
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.http.HttpRequest;
+import com.google.api.client.http.HttpRequestInitializer;
+import com.google.api.client.json.jackson.JacksonFactory;
+//import com.google.api.client.http.HttpResponse;
+//import org.apache.http.client.methods.HttpGet;
 
 /**
  * An activity that communicates with your App Engine backend via Cloud
@@ -147,7 +164,7 @@ public class RegisterActivity extends Activity {
                 {
                     try
                     {
-                        Thread.sleep(1000);
+                        Thread.sleep(1000*60*10);
                         Log.i("Noise", "Tock");
                     } catch (InterruptedException e) { };
                     mHandler.post(updater);
@@ -363,8 +380,8 @@ public class RegisterActivity extends Activity {
   	super.onPause();
 
   	Log.d(TAG, "QQQ: onpause.");
-
-  	stopRecorder();
+  	// we want to monitor even when activity is paused.  ??
+  	//stopRecorder();
   }
 
   public void startRecorder(){
@@ -408,6 +425,13 @@ public class RegisterActivity extends Activity {
   	Log.d(TAG,"QQQ: " + mStatusView  + " " + Double.toString((getAmplitudeEMA())) + " dB" );
   	
   	mStatusView.setText(Double.toString((getAmplitudeEMA())) + " dB");
+  	HttpGetter get = new HttpGetter();
+  	try {
+		get.execute(new URL("http://citysync.brooklynmarathon.com/sound?s=" + getAmplitudeEMA()));
+	} catch (MalformedURLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
   }
   public double soundDb(double ampl){
       return  20 * Math.log10(getAmplitudeEMA() / ampl);
@@ -426,4 +450,46 @@ public class RegisterActivity extends Activity {
       mEMA = EMA_FILTER * amp + (1.0 - EMA_FILTER) * mEMA;
       return mEMA;
   }
+  
+  private class HttpGetter extends AsyncTask<URL, Void, Void> {
+
+      @Override
+      protected Void doInBackground(URL... urls) {
+              // TODO Auto-generated method stub
+              StringBuilder builder = new StringBuilder();
+              HttpClient client = new DefaultHttpClient();
+              HttpGet httpGet = new HttpGet();
+              try {
+				httpGet.setURI(urls[0].toURI());
+			} catch (URISyntaxException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+              
+              try {
+                      HttpResponse response = client.execute(httpGet);
+                      StatusLine statusLine = response.getStatusLine();
+                      int statusCode = statusLine.getStatusCode();
+                      if (statusCode == 200) {
+                              HttpEntity entity = response.getEntity();
+                              InputStream content = entity.getContent();
+                              BufferedReader reader = new BufferedReader(
+                                              new InputStreamReader(content));
+                              String line;
+                              while ((line = reader.readLine()) != null) {
+                                      builder.append(line);
+                              }
+                              Log.v("Getter", "Your data: " + builder.toString()); //response data
+                      } else {
+                              Log.e("Getter", "Failed to download file");
+                      }
+              } catch (ClientProtocolException e) {
+                      e.printStackTrace();
+              } catch (IOException e) {
+                      e.printStackTrace();
+              }
+              
+              return null;
+      }
+}
 }

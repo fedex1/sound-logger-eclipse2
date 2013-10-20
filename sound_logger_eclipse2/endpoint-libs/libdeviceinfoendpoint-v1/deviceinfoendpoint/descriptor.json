@@ -1,13 +1,13 @@
 {
   "files": [
     {
-      "downloadUrl": "/downloads/deviceinfoendpoint/v1/20131020001101/java/1.16.0-rc/brooklynmarathon.com-deviceinfoendpoint-v1-20131020001101-java-1.16.0-rc-sources.jar", 
-      "path": "brooklynmarathon.com-deviceinfoendpoint-v1-20131020001101-java-1.16.0-rc-sources.jar", 
+      "downloadUrl": "/downloads/deviceinfoendpoint/v1/20131020030301/java/1.16.0-rc/brooklynmarathon.com-deviceinfoendpoint-v1-20131020030301-java-1.16.0-rc-sources.jar", 
+      "path": "brooklynmarathon.com-deviceinfoendpoint-v1-20131020030301-java-1.16.0-rc-sources.jar", 
       "type": "source", 
-      "timestamp": "2013-10-20 00:11"
+      "timestamp": "2013-10-20 03:03"
     }, 
     {
-      "path": "brooklynmarathon.com-deviceinfoendpoint-v1-20131020001101-java-1.16.0-rc.jar.properties", 
+      "path": "brooklynmarathon.com-deviceinfoendpoint-v1-20131020030301-java-1.16.0-rc.jar.properties", 
       "type": "android.properties"
     }
   ], 
@@ -702,5 +702,5 @@
   "packagePath": "sound_logger_eclipse2", 
   "language_version": "1.16.0-rc", 
   "id": "deviceinfoendpoint:v1", 
-  "revision": 20131020001101
+  "revision": 20131020030301
 }
