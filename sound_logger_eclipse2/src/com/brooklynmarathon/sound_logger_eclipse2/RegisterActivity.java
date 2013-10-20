@@ -423,7 +423,7 @@ public class RegisterActivity extends Activity {
 
   public void updateTv(){
 	  
-	  Double db = getAmplitudeEMA();
+	  Double db = soundDb(65535.0);
   	Log.d(TAG,"QQQ: " + mStatusView  + " " + Double.toString(db) + " dB" );
   	
   	mStatusView.setText(Double.toString(db) + " dB");
