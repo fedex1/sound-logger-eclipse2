@@ -2,6 +2,7 @@ package com.brooklynmarathon.sound_logger_eclipse2;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.annotation.Nullable;
 import javax.inject.Named;
@@ -18,6 +19,7 @@ import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.response.CollectionResponse;
 import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.datanucleus.query.JPACursorHelper;
+//import com.sun.istack.internal.logging.Logger;
 
 
 /**
@@ -56,7 +58,7 @@ public class MessageEndpoint {
   private static final String API_KEY = "AIzaSyCNGQAzSvDIU-zIvzJ3-v5JvCPobKVAirc";
 
   private static final DeviceInfoEndpoint endpoint = new DeviceInfoEndpoint();
-  
+  private static final Logger log = Logger.getLogger(MessageEndpoint.class.getName());
   /**
    * This function returns a list of messages starting with the newest message
    * first and in descending order from there
@@ -142,7 +144,8 @@ public class MessageEndpoint {
     CollectionResponse<DeviceInfo> response = endpoint.listDeviceInfo(null,
         10);
     for (DeviceInfo deviceInfo : response.getItems()) {
-      doSendViaGcm(message, sender, deviceInfo);
+      Result result = doSendViaGcm(message, sender, deviceInfo);
+      log.info("QQQ: result: " + result);
     }
   }
 
