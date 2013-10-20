@@ -10,6 +10,8 @@
    <uses-permission android:name="android.permission.WAKE_LOCK"/>
    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
    <uses-permission android:name="android.permission.USE_CREDENTIALS"/>
+   <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+   
    <application android:allowBackup="true" android:icon="@drawable/ic_launcher" android:label="@string/app_name" android:theme="@style/AppTheme">
         <activity android:label="@string/app_name" android:name="com.brooklynmarathon.sound_logger_eclipse2.MainActivity">
             <intent-filter>
