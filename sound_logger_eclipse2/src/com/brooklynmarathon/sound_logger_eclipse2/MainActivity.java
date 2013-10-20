@@ -99,8 +99,13 @@ public class MainActivity extends Activity {
     public void onResume()
     {
         super.onResume();
+
+    	Log.d(TAG, "QQQ: onresume.");
+
         try{
-        startRecorder();
+        	if (mRecorder == null){
+        		startRecorder();
+        	}
         }catch(Exception e){
         	mStatusView.setText(e.getMessage());
                 	
@@ -108,15 +113,19 @@ public class MainActivity extends Activity {
     }
 
     public void onPause()
-    {
-        super.onPause();
-        stopRecorder();
+    {    
+    	super.onPause();
+
+    	Log.d(TAG, "QQQ: onpause.");
+ 
+    	//stopRecorder();
     }
 
     public void startRecorder(){
         if (mRecorder == null)
         {
             mRecorder = new MediaRecorder();
+            Log.d(TAG, "QQQ initial mrecorder: " + mRecorder);
             mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
             mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
             mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
@@ -125,16 +134,16 @@ public class MainActivity extends Activity {
             {           
                 mRecorder.prepare();
             }catch (java.io.IOException ioe) {
-                android.util.Log.e("[Monkey]", "IOException: " + android.util.Log.getStackTraceString(ioe));
+                Log.e(TAG, "QQQ: IOException: " + android.util.Log.getStackTraceString(ioe));
 
             }catch (java.lang.SecurityException e) {
-                android.util.Log.e("[Monkey]", "SecurityException: " + android.util.Log.getStackTraceString(e));
+                Log.e(TAG, "QQQ: SecurityException: " + android.util.Log.getStackTraceString(e));
             }
             try
             {           
                 mRecorder.start();
             }catch (java.lang.SecurityException e) {
-                android.util.Log.e("[Monkey]", "SecurityException: " + android.util.Log.getStackTraceString(e));
+                Log.e(TAG, "QQQ: SecurityException: " + android.util.Log.getStackTraceString(e));
             }
 
             //mEMA = 0.0;
@@ -158,6 +167,8 @@ public class MainActivity extends Activity {
         return  20 * Math.log10(getAmplitudeEMA() / ampl);
     }
     public double getAmplitude() {
+    	Log.d(TAG, "QQQ: mrecorder: " + mRecorder);
+    	
         if (mRecorder != null)
             return  (mRecorder.getMaxAmplitude());
         else
