@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
@@ -30,6 +29,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
 
 import com.brooklynmarathon.sound_logger_eclipse2.messageEndpoint.MessageEndpoint;
@@ -79,6 +81,7 @@ public class RegisterActivity extends Activity {
   private OnTouchListener registerListener = null;
   private OnTouchListener unregisterListener = null;
   private MessageEndpoint messageEndpoint = null;
+private int sleep = 1000*60;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -142,6 +145,29 @@ public class RegisterActivity extends Activity {
 
     regButton.setOnTouchListener(registerListener);
     
+    
+    RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radiogroup_polling);        
+    radioGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() 
+    {
+        public void onCheckedChanged(RadioGroup group, int checkedId) {
+            // checkedId is the RadioButton selected
+            switch(checkedId) {
+            case R.id.radio_fast:
+            	sleep =1000;
+            	if(runner != null){
+            		runner.interrupt();
+            	}
+            	break;
+            case R.id.radio_slow:
+            	sleep=1000*60;
+            	break;
+            }    
+        }
+    });
+    
+    RadioButton radio = (RadioButton) findViewById(R.id.radio_slow);
+    radio.setChecked(true);
+    
     /*
      * build the messaging endpoint so we can access old messages via an endpoint call
      */
@@ -162,14 +188,16 @@ public class RegisterActivity extends Activity {
             {
                 while (runner != null)
                 {
-                    try
+                	mHandler.post(updater);
+                    
+                	try
                     {
-                        Thread.sleep(1000*60);
+                    	Thread.sleep(sleep);
+                        //Thread.sleep(1000*60);
                     	//Thread.sleep(1000);
                         
                     	Log.i("Noise", "Tock");
                     } catch (InterruptedException e) { };
-                    mHandler.post(updater);
                 }
             }
         };
@@ -429,7 +457,7 @@ public class RegisterActivity extends Activity {
 	  Double soundlevel = getAmplitude();
   	Log.d(TAG,"QQQ: " + mStatusView  + " " + Double.toString(soundlevel) );
   	
-  	mStatusView.setText(Double.toString(soundlevel) );
+  	mStatusView.setText("sound: " + Double.toString(soundlevel) + " sleep: " + sleep );
   	HttpGetter get = new HttpGetter();
   	/**/
   	try {
